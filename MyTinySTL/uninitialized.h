@@ -15,6 +15,7 @@ namespace mystl
 /*****************************************************************************************/
 // uninitialized_copy
 // 把 [first, last) 上的内容复制到以 result 为起始处的空间，返回复制结束的位置
+// 如果是non-trivial对象需逐个构造元素
 /*****************************************************************************************/
 template <class InputIter, class ForwardIter>
 ForwardIter 
@@ -55,6 +56,7 @@ ForwardIter uninitialized_copy(InputIter first, InputIter last, ForwardIter resu
 /*****************************************************************************************/
 // uninitialized_copy_n
 // 把 [first, first + n) 上的内容复制到以 result 为起始处的空间，返回复制结束的位置
+// 适用于pair类
 /*****************************************************************************************/
 template <class InputIter, class Size, class ForwardIter>
 ForwardIter 
@@ -134,6 +136,7 @@ void  uninitialized_fill(ForwardIter first, ForwardIter last, const T& value)
 /*****************************************************************************************/
 // uninitialized_fill_n
 // 从 first 位置开始，填充 n 个元素值，返回填充结束的位置
+// 因为反转迭代器有重载运算符，所以需要额外判别
 /*****************************************************************************************/
 template <class ForwardIter, class Size, class T>
 ForwardIter 

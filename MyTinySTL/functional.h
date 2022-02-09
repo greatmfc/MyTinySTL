@@ -234,7 +234,7 @@ MYSTL_TRIVIAL_HASH_FCN(unsigned long long)
 
 #undef MYSTL_TRIVIAL_HASH_FCN
 
-// 对于浮点数，逐位哈希
+// 对于浮点数，使用fnv算法逐位计算哈希值
 inline size_t bitwise_hash(const unsigned char* first, size_t count)
 {
 #if (_MSC_VER && _WIN64) || ((__GNUC__ || __clang__) &&__SIZEOF_POINTER__ == 8)
