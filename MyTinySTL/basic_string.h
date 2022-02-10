@@ -16,7 +16,7 @@ namespace mystl
 
 // char_traits
 
-template <class CharType>
+template <class CharType> //提供给非char类型使用，例如int
 struct char_traits
 {
   typedef CharType char_type;
@@ -407,7 +407,7 @@ public:
   size_type capacity() const noexcept
   { return cap_; }
   size_type max_size() const noexcept
-  { return static_cast<size_type>(-1); }
+  { return static_cast<size_type>(-1); } //unsigned long long
 
   void      reserve(size_type n);
   void      shrink_to_fit();
@@ -817,7 +817,7 @@ basic_string<CharType, CharTraits>::
 insert(const_iterator pos, value_type ch)
 {
   iterator r = const_cast<iterator>(pos);
-  if (size_ == cap_)
+  if (size_ == cap_) //如果大小已满
   {
     return reallocate_and_fill(r, 1, ch);
   }
