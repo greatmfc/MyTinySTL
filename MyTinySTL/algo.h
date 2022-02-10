@@ -138,6 +138,7 @@ find_if_not(InputIter first, InputIter last, UnaryPredicate unary_pred)
 /*****************************************************************************************/
 // search
 // 在[first1, last1)中查找[first2, last2)的首次出现点
+// 返回指向首次出现点的迭代器
 /*****************************************************************************************/
 template <class ForwardIter1, class ForwardIter2>
 ForwardIter1
@@ -234,14 +235,14 @@ search_n(ForwardIter first, ForwardIter last, Size n, const T& value)
       {
         ++i;
         --m;
-      }
+      } //连续迭代比对查找
       if (m == 0)
       {
         return first;
       }
       else
       {
-        first = mystl::find(i, last, value);
+        first = mystl::find(i, last, value); //重新查找
       }
     }
     return last;
@@ -1030,7 +1031,7 @@ bool is_heap(RandomIter first, RandomIter last)
   {
     if (first[parent] < first[child])
       return false;
-    if ((child & 1) == 0)
+    if ((child & 1) == 0) //每两个，即到达每个parent时
       ++parent;
   }
   return true;
@@ -2169,6 +2170,7 @@ inplace_merge(BidirectionalIter first, BidirectionalIter middle,
 
 /*****************************************************************************************/
 // partial_sort
+// 堆排序 
 // 对整个序列做部分排序，保证较小的 N 个元素以递增顺序置于[first, first + N)中
 /*****************************************************************************************/
 template <class RandomIter>
