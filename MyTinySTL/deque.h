@@ -139,7 +139,7 @@ struct deque_iterator : public iterator<random_access_iterator_tag, T>
   {
     self tmp = *this;
     ++*this;
-    return tmp;
+    return tmp; //返回的不是引用
   }
 
   self& operator--()
@@ -490,7 +490,7 @@ deque<T>& deque<T>::operator=(const deque& rhs)
     const auto len = size();
     if (len >= rhs.size())
     {
-      erase(mystl::copy(rhs.begin_, rhs.end_, begin_), end_);
+      erase(mystl::copy(rhs.begin_, rhs.end_, begin_), end_); //把大于的部分擦除
     }
     else
     {
@@ -1333,7 +1333,7 @@ void deque<T>::reallocate_map_at_front(size_type need_buffer)
   const size_type old_buffer = end_.node - begin_.node + 1;
   const size_type new_buffer = old_buffer + need_buffer;
 
-  // 另新的 map 中的指针指向原来的 buffer，并开辟新的 buffer
+  // 令新的 map 中的指针指向原来的 buffer，并开辟新的 buffer
   auto begin = new_map + (new_map_size - new_buffer) / 2;
   auto mid = begin + need_buffer;
   auto end = mid + old_buffer;

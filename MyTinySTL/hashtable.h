@@ -29,7 +29,7 @@ struct hashtable_node
   hashtable_node(const hashtable_node& node) :next(node.next), value(node.value) {}
   hashtable_node(hashtable_node&& node) :next(node.next), value(mystl::move(node.value))
   {
-    node.next = nullptr;
+    node.next = nullptr; //因为是移动赋值
   }
 };
 
@@ -527,6 +527,7 @@ private:
     return equal_(key1, key2);
   }
 
+  //返回一个该节点的常量迭代器
   const_iterator M_cit(node_ptr node) const noexcept
   {
     return const_iterator(node, const_cast<hashtable*>(this));
@@ -1000,7 +1001,7 @@ erase(const_iterator first, const_iterator last)
 template <class T, class Hash, class KeyEqual>
 typename hashtable<T, Hash, KeyEqual>::size_type
 hashtable<T, Hash, KeyEqual>::
-erase_multi(const key_type& key)
+erase_multi(const key_type& key) //删除符合的整个节点
 {
   auto p = equal_range_multi(key);
   if (p.first.node != nullptr)
@@ -1014,7 +1015,7 @@ erase_multi(const key_type& key)
 template <class T, class Hash, class KeyEqual>
 typename hashtable<T, Hash, KeyEqual>::size_type
 hashtable<T, Hash, KeyEqual>::
-erase_unique(const key_type& key)
+erase_unique(const key_type& key) //删除相等值的那一个
 {
   const auto n = hash(key);
   auto first = buckets_[n];
@@ -1201,7 +1202,7 @@ template <class T, class Hash, class KeyEqual>
 pair<typename hashtable<T, Hash, KeyEqual>::iterator,
   typename hashtable<T, Hash, KeyEqual>::iterator>
 hashtable<T, Hash, KeyEqual>::
-equal_range_unique(const key_type& key)
+equal_range_unique(const key_type& key) //只返回等于该值的迭代器以及桶位置
 {
   const auto n = hash(key);
   for (node_ptr first = buckets_[n]; first; first = first->next)
@@ -1565,6 +1566,7 @@ erase_bucket(size_type n, node_ptr last)
 }
 
 // equal_to 函数
+//查找是否整个表以及其中的整个桶相等
 template <class T, class Hash, class KeyEqual>
 bool hashtable<T, Hash, KeyEqual>::equal_to_multi(const hashtable& other)
 {
@@ -1575,13 +1577,15 @@ bool hashtable<T, Hash, KeyEqual>::equal_to_multi(const hashtable& other)
     auto p1 = equal_range_multi(value_traits::get_key(*f));
     auto p2 = other.equal_range_multi(value_traits::get_key(*f));
     if (mystl::distance(p1.first, p1.last) != mystl::distance(p2.first, p2.last) ||
-        !mystl::is_permutation(p1.first, p2.last, p2.first, p2.last))
+        !mystl::is_permutation(p1.first, p1.last, p2.first, p2.last))
+        //判断前者是否是后者的排列组合
       return false;
     f = p1.last;
   }
   return true;
 }
 
+//查找是否有某个键值的桶
 template <class T, class Hash, class KeyEqual>
 bool hashtable<T, Hash, KeyEqual>::equal_to_unique(const hashtable& other)
 {
