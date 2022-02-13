@@ -198,6 +198,7 @@ struct rb_tree_iterator_base :public mystl::iterator<mystl::bidirectional_iterat
   rb_tree_iterator_base() :node(nullptr) {}
 
   // 使迭代器前进
+  //使用数组视角，前进则是向数值大的节点前进
   void inc()
   {
     if (node->right != nullptr)
@@ -349,7 +350,7 @@ struct rb_tree_const_iterator :public rb_tree_iterator_base<T>
 };
 
 // tree algorithm
-
+//在左枝找到最小节点
 template <class NodePtr>
 NodePtr rb_tree_min(NodePtr x) noexcept
 {
@@ -390,6 +391,7 @@ void rb_tree_set_red(NodePtr& node) noexcept
   node->color = rb_tree_red;
 }
 
+//找到一个右子树或右子树的最小值
 template <class NodePtr>
 NodePtr rb_tree_next(NodePtr node) noexcept
 {
@@ -904,6 +906,7 @@ public:
   iterator       upper_bound(const key_type& key);
   const_iterator upper_bound(const key_type& key) const;
 
+  //返回该值区间的迭代器
   mystl::pair<iterator, iterator>             
   equal_range_multi(const key_type& key)
   {
