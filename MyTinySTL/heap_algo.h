@@ -11,6 +11,7 @@ namespace mystl
 /*****************************************************************************************/
 // push_heap
 // 该函数接受两个迭代器，表示一个 heap 容器的首尾，并且新元素已经插入到底部容器的最尾端，调整 heap
+// 上溯
 /*****************************************************************************************/
 template <class RandomIter, class Distance, class T>
 void push_heap_aux(RandomIter first, Distance holeIndex, Distance topIndex, T value)
@@ -78,7 +79,7 @@ void adjust_heap(RandomIter first, Distance holeIndex, Distance len, T value)
   auto rchild = 2 * holeIndex + 2;
   while (rchild < len)
   {
-    if (*(first + rchild) < *(first + rchild - 1))
+    if (*(first + rchild) < *(first + rchild - 1)) //选择左子节点
       --rchild;
     *(first + holeIndex) = *(first + rchild);
     holeIndex = rchild;
